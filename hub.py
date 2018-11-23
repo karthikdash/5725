@@ -4,18 +4,20 @@ import socket
 from threading import Thread
 
 # For receving data from the node
-HOST = '127.0.0.1'
+HOST = '0.0.0.0'
 PORT = 10000
 context = -1
 
 
 relayPin1 = 19
 relayPin2 = 13	
-
+pirPin1 = 26
+GPIO.cleanup()
 GPIO.setmode(GPIO.BCM)
 
 GPIO.setup(relayPin1, GPIO.OUT)
 GPIO.setup(relayPin2, GPIO.OUT)
+GPIO.setup(pirPin1, GPIO.IN)
 
 class ListenThread(Thread):
     def __init__(self):
@@ -44,11 +46,15 @@ class ListenThread(Thread):
 thread = ListenThread()
 thread.start()
 
-
+last = 0
 while True:
+        time.sleep(0.5)
+        cur = time.time()
+        print "hub ", context
 	if context == 1:
 		GPIO.output(19, GPIO.HIGH)
-	else:
+                time.sleep(0.5)
+        else:
 		GPIO.output(19, GPIO.LOW)
 	#
 	#
