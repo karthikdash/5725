@@ -2,6 +2,31 @@ import RPi.GPIO as GPIO
 import time
 import socket
 from threading import Thread
+import pygame
+import os
+import time
+
+os.putenv('SDL_VIDEODRIVER', 'fbcon')
+os.putenv('SDL_FBDEV', '/dev/fb1')
+
+pygame.init()
+
+size = width, height = 320, 240
+speed = [2,2]
+speed1 = [2,2]
+black = 20,20,40
+white = 255,255,255
+blue = 0,0,255
+red = 255,0,0
+
+
+screen = pygame.display.set_mode(size)
+# ball = pygame.image.load("cat.png")
+# ball1 = pygame.image.load("catgirl.png")
+# ballrect = ball.get_rect()
+# ballrect1 = ball1.get_rect()
+cur = time.time()
+
 
 # For receving data from the node
 HOST = '0.0.0.0'
@@ -48,22 +73,31 @@ thread.start()
 
 last = 0
 while True:
-        time.sleep(0.5)
-        cur = time.time()
-        print "hub ", context
-	if context == 1:
-		GPIO.output(19, GPIO.HIGH)
-                time.sleep(0.5)
-        else:
-		GPIO.output(19, GPIO.LOW)
-	#
-	#
-	# Write logic such that this hub receives some signal from the hub and Triggers the Relay ON
-	#
-	#
+        val =  GPIO.input(26)
+        print "hub: ", val, "node: ", context
+        if val == 1:
+            GPIO.output(13, GPIO.HIGH)
+            #time.sleep(3)
 
-	#
-	#
-	# Write logic such that this hub receives some signal from the hub and Triggers the Relay OFF
-	#
-	#
+            state = GPIO.input(26)
+            if state == 1:
+                val == 1
+            else:
+                continue
+        else:
+            GPIO.output(13, GPIO.LOW)
+
+            time.sleep(0.2)
+        
+        # Pygame
+        screen.fill(black)
+        pygame.draw.rect(screen, white, (0, 0, 320, 25), 0)
+        pygame.draw.rect(screen, white, (0, 95, 250, 50), 0)
+        pygame.draw.rect(screen, white, (0, 240 - 25, 320, 25), 0)
+        if val == 1:
+            pygame.draw.circle(screen, red, (50,50), 20)
+        if context == 1:
+            pygame.draw.circle(screen, red, (150,50), 20)
+	pygame.display.flip()
+
+
