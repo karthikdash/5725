@@ -1,3 +1,10 @@
+# ========================================================================
+#  Node Server Code
+# ========================================================================
+# Node program will reads the values from the two pir sensors
+# Written by Karthik(kd453) and Chirag(cw844)
+
+
 import RPi.GPIO as GPIO
 import time
 import socket
@@ -60,7 +67,6 @@ while True:
             print " Relay0 ON"
             data["node"] = "1"
 
-    
     if GPIO.input(pirPin1):
         print 1,
         last_movement_time1 = time.time()
